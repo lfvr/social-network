@@ -21,7 +21,7 @@
     {% for message in messages %}
     <div class="card">
         <div class="card-body">
-            <h3 class="card-title">{{ message.user }}</h3>
+            <h3 class="card-title"><a href="{% url 'profile' name=message.user %}">{{ message.user }}</a></h3>
             <h4 class="card-subtitle">Posted: {{ message.created }}</h4>
 
             {% if message.last_edited.datetime != message.created.year.datetime %}
