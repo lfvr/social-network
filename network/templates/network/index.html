@@ -1,0 +1,43 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        <div class="card">
+            <div class="card-body">
+                <h2>New Post</h2>
+                <form action="{% url 'new_post' %}" method="POST">
+                    {% csrf_token %}
+                    <div>
+                        <textarea rows=5 name="message"></textarea>
+                    </div>  
+                    <div>
+                        <input type="submit" class="btn btn-primary" value="Post" style="width:-webkit-fill-available">
+                    </div>
+                </form>
+            </div>  
+        </div>
+    {% endif %}
+
+    {% for message in messages %}
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">{{ message.user }}</h3>
+            <h4 class="card-subtitle">Posted: {{ message.created }}</h4>
+
+            {% if message.last_edited.datetime != message.created.year.datetime %}
+                <h5 class="card-subtitle">Last edited: {{ message.last_edited }}</h5>
+            {% endif %}
+
+            <div class="message">
+                <p>{{ message.message }}</p>
+            </div>
+            <div class="likes">
+                <!-- if user likes post -->
+                <!-- red heart -->
+                <!-- else -->
+                <p>♡ {{ message.likes }}</p>
+            </div> 
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}

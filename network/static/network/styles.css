@@ -1,0 +1,24 @@
+.card {
+    margin: 1%;
+} 
+
+h4 {
+    color: grey;
+    font-size: 0.75rem;
+    text-align: right;
+}
+
+h5 {
+    color: grey;
+    font-size: 0.75rem;
+    padding-top: 0.5rem;
+    text-align: right;
+}
+
+p {
+    font-size: 1.25rem;
+}
+
+textarea {
+    width: -webkit-fill-available;
+}
