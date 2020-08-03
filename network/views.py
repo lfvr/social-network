@@ -101,6 +101,14 @@ def profile(request, name):
         "is_following": is_following
     })
 
+def following(request):
+    # get list of following, then get their messages
+    following = User.objects.values('following').filter(username=request.user)
+    messages = Message.objects.filter(user__in=following)
+    return render(request, "network/index.html", {
+        "messages": messages
+    })
+
 def follow(request):
     # Get current profile
     profile_name = request.POST["profile"]
@@ -116,3 +124,4 @@ def follow(request):
         # follow
         curr_user.following.add(profile)
     return JsonResponse({"success": True})
+
