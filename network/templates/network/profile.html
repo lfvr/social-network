@@ -25,32 +25,51 @@
 
     {% endif %}
 
-    {% for message in messages %}
-
-    <div class="card">
-        <div class="card-body"></div>
-            <h4 class="card-subtitle">Posted: {{ message.created }}</h4>
-
-            {% if message.last_edited.datetime != message.created.year.datetime %}
-                <h5 class="card-subtitle">Last edited: {{ message.last_edited }}</h5>
-            {% endif %}
-
-            <div class="message">
-                <p>{{ message.message }}</p>
+    <nav aria-label="Post navigation">
+    
+        {% if num_pages > 1 %}
+            
+            <ul class="pagination">
+    
+                {% if not previous == 0 %}
+                    <li class="page-item"><a class="page-link" href="{% url 'profile' name=profile page_number=previous %}">Previous</a></li>
+                {% endif %}
+    
+                {% for i in page_range %}
+                    <li class="page-item"><a class="page-link" href="{% url 'profile' name=profile page_number=i %}">{{ i }}</a></li>
+                {% endfor %}
+    
+                {% if not next > num_pages %}
+                    <li class="page-item"><a class="page-link" href="{% url 'profile' name=profile page_number=next %}">Next</a></li>
+                {% endif %}
+            </ul>
+         
+        {% endif %}
+    
+        {% for message in messages %}
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title"><a href="{% url 'profile' name=message.user %}">{{ message.user }}</a></h3>
+                <h4 class="card-subtitle">Posted: {{ message.created }}</h4>
+    
+                {% if message.last_edited.datetime != message.created.year.datetime %}
+                    <h5 class="card-subtitle">Last edited: {{ message.last_edited }}</h5>
+                {% endif %}
+    
+                <div class="message">
+                    <p>{{ message.message }}</p>
+                </div>
+                <div class="likes">
+                    <!-- if user likes post -->
+                    <!-- red heart -->
+                    <!-- else -->
+                    <p>♡ {{ message.likes }}</p>
+                </div> 
             </div>
-            <div class="likes">
-                <!-- if user likes post -->
-                <!-- red heart -->
-                <!-- else -->
-                <p>♡ {{ message.likes }}</p>
-            </div> 
         </div>
-    </div>
-
-    {% empty %}
-
-    <h3>No messages yet!</h3>
-
-    {% endfor %}
+        {% empty %}
+        No messages yet!
+        {% endfor %}
+        </nav>
 
 {% endblock %}

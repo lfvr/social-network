@@ -1,39 +1,19 @@
-{% extends "network/layout.html" %}
-
-{% block body %}
-    {% if user.is_authenticated %}
-        <div class="card">
-            <div class="card-body">
-                <h2>New Post</h2>
-                <form action="{% url 'new_post' %}" method="POST">
-                    {% csrf_token %}
-                    <div>
-                        <textarea rows=5 name="message"></textarea>
-                    </div>  
-                    <div>
-                        <input type="submit" class="btn btn-primary" value="Post" style="width:-webkit-fill-available">
-                    </div>
-                </form>
-            </div>  
-        </div>
-    {% endif %}
-
-    <nav aria-label="Post navigation">
+<nav aria-label="Post navigation">
     
     {% if num_pages > 1 %}
         
         <ul class="pagination">
 
             {% if not previous == 0 %}
-                <li class="page-item"><a class="page-link" href="{% url 'index' page_number=previous %}">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="{% url view page_number=previous %}">Previous</a></li>
             {% endif %}
 
             {% for i in page_range %}
-                <li class="page-item"><a class="page-link" href="{% url 'index' page_number=i %}">{{ i }}</a></li>
+                <li class="page-item"><a class="page-link" href="{% url view page_number=i %}">{{ i }}</a></li>
             {% endfor %}
 
             {% if not next > num_pages %}
-                <li class="page-item"><a class="page-link" href="{% url 'index' page_number=next %}">Next</a></li>
+                <li class="page-item"><a class="page-link" href="{% url view page_number=next %}">Next</a></li>
             {% endif %}
         </ul>
      
@@ -64,4 +44,3 @@
     No messages yet!
     {% endfor %}
     </nav>
-{% endblock %}
