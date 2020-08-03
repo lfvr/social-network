@@ -15,25 +15,15 @@ def index(request, page_number=1):
     # Get all messages
     messages = Message.objects.all()
     
-    # Paginate
-    p = Paginator(messages, 10)
-    num_pages = p.num_pages
-   
-    # Return max 10 messages
-    if num_pages > 1:
-        messages = p.page(page_number).object_list
-
-    # Check min and max
-    previous = page_number - 1
-    next = page_number + 1
+    dict = make_pages(messages, page_number)
 
     return render(request, "network/index.html", {
-        "messages": messages,
-        "num_pages": num_pages,
-        "page_range": p.page_range,
-        "curr_page": page_number,
-        "previous": previous,
-        "next": next
+        "messages": dict["messages"],
+        "num_pages": dict["num_pages"],
+        "page_range": dict["page_range"],
+        "curr_page": dict["curr_page"],
+        "previous": dict["previous"],
+        "next": dict["next"]
     })
 
 
@@ -129,7 +119,6 @@ def profile(request, name, page_number=1):
         previous = dict["previous"]
         next = dict["next"]
 
-
     # Show profile page
     return render(request, "network/profile.html", {
         "is_curr_user": is_curr_user,
@@ -166,7 +155,7 @@ def following(request, page_number=1):
         previous = dict["previous"]
         next = dict["next"]
 
-    return render(request, "network/index.html", {
+    return render(request, "network/following.html", {
         "messages": messages,
         "num_pages": num_pages,
         "page_range": page_range,

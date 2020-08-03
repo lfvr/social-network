@@ -1,25 +1,44 @@
-<nav aria-label="Post navigation">
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+    {% block followers %}{% endblock %}
+    
+    {% if user.is_authenticated %}
+
+        {% block new_post %}{% endblock %}
+
+    {% endif %}
+
+    <nav aria-label="Post navigation">
     
     {% if num_pages > 1 %}
         
-        <ul class="pagination">
+        <ul class="pagination justify-content-center">
 
             {% if not previous == 0 %}
-                <li class="page-item"><a class="page-link" href="{% url view page_number=previous %}">Previous</a></li>
+            
+                {% block previous_button %}{% endblock %}
+    
             {% endif %}
 
             {% for i in page_range %}
-                <li class="page-item"><a class="page-link" href="{% url view page_number=i %}">{{ i }}</a></li>
+
+                {% block number_button %}{% endblock %}
+
             {% endfor %}
 
             {% if not next > num_pages %}
-                <li class="page-item"><a class="page-link" href="{% url view page_number=next %}">Next</a></li>
+
+                {% block next_button %}{% endblock %}
+
             {% endif %}
         </ul>
      
     {% endif %}
 
     {% for message in messages %}
+
     <div class="card">
         <div class="card-body">
             <h3 class="card-title"><a href="{% url 'profile' name=message.user %}">{{ message.user }}</a></h3>
@@ -40,7 +59,38 @@
             </div> 
         </div>
     </div>
+
     {% empty %}
+
     No messages yet!
+
     {% endfor %}
+
+    {% if num_pages > 1 %}
+        
+        <ul class="pagination justify-content-center" >
+
+            {% if not previous == 0 %}
+            
+                {% block previous_button_end %}{% endblock %}
+    
+            {% endif %}
+
+            {% for i in page_range %}
+
+                {% block number_button_end %}{% endblock %}
+
+            {% endfor %}
+
+            {% if not next > num_pages %}
+
+                {% block next_button_end %}{% endblock %}
+
+            {% endif %}
+        </ul>
+     
+    {% endif %}
+
     </nav>
+
+{% endblock %}

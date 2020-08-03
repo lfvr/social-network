@@ -18,25 +18,25 @@
 {% endblock %}
 
 {% block previous_button %}
-    <li class="page-item"><a class="page-link" href="{% url 'index' page_number=previous %}">Previous</a></li>
+    <li class="page-item"><a class="page-link" href="{% url 'following' page_number=previous %}">Previous</a></li>
 {% endblock %}
 
 {% block number_button %}
-    <li class="page-item"><a class="page-link" href="{% url 'index' page_number=i %}">{{ i }}</a></li>
+    <li class="page-item"><a class="page-link" href="{% url 'following' page_number=i %}">{{ i }}</a></li>
 {% endblock %}
 
 {% block next_button %}
-    <li class="page-item"><a class="page-link" href="{% url 'index' page_number=next %}">Next</a></li>
+    <li class="page-item"><a class="page-link" href="{% url 'following' page_number=next %}">Next</a></li>
 {% endblock %}
 
 {% block previous_button_end %}
-    <li class="page-item"><a class="page-link" href="{% url 'index' page_number=previous %}">Previous</a></li>
+    <li class="page-item"><a class="page-link" href="{% url 'following' page_number=previous %}">Previous</a></li>
 {% endblock %}
 
 {% block number_button_end %}
-    <li class="page-item"><a class="page-link" href="{% url 'index' page_number=i %}">{{ i }}</a></li>
+    <li class="page-item"><a class="page-link" href="{% url 'following' page_number=i %}">{{ i }}</a></li>
 {% endblock %}
 
 {% block next_button_end %}
-    <li class="page-item"><a class="page-link" href="{% url 'index' page_number=next %}">Next</a></li>
+    <li class="page-item"><a class="page-link" href="{% url 'following' page_number=next %}">Next</a></li>
 {% endblock %}

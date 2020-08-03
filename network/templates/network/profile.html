@@ -1,75 +1,58 @@
-{% extends 'network/layout.html' %}
+{% extends 'network/posts_template.html' %}
 
 {% block head %}
 {% load static %}
     <script src="{% static 'network/follow.js' %}" type="text/javascript"></script>
-
 {% endblock %}
 
-{% block body %}
 
-    <h1 id="username">{{ profile.username }}</h1>
-    <h2>Followers: <span id="followers">{{ followers }}</span></h2>
-    <h2>Following: {{ following }}</h2>
-
-    {% if not is_curr_user and user.is_authenticated %}
-
-    <form id="follow">
-        <!-- Check for currently following, change wording of button -->
-        {% if is_following %}
-        <input type="submit" class="btn btn-primary" style="width:-webkit-fill-available" value="Unfollow" id="follow_button" name="follow_button">
-        {% else %}
-        <input type="submit" class="btn btn-primary" style="width:-webkit-fill-available" value="Follow" id="follow_button" name="follow_button">
-        {% endif %}
-    </form> 
-
-    {% endif %}
-
-    <nav aria-label="Post navigation">
-    
-        {% if num_pages > 1 %}
-            
-            <ul class="pagination">
-    
-                {% if not previous == 0 %}
-                    <li class="page-item"><a class="page-link" href="{% url 'profile' name=profile page_number=previous %}">Previous</a></li>
-                {% endif %}
-    
-                {% for i in page_range %}
-                    <li class="page-item"><a class="page-link" href="{% url 'profile' name=profile page_number=i %}">{{ i }}</a></li>
-                {% endfor %}
-    
-                {% if not next > num_pages %}
-                    <li class="page-item"><a class="page-link" href="{% url 'profile' name=profile page_number=next %}">Next</a></li>
-                {% endif %}
-            </ul>
-         
-        {% endif %}
-    
-        {% for message in messages %}
-        <div class="card">
-            <div class="card-body">
-                <h3 class="card-title"><a href="{% url 'profile' name=message.user %}">{{ message.user }}</a></h3>
-                <h4 class="card-subtitle">Posted: {{ message.created }}</h4>
-    
-                {% if message.last_edited.datetime != message.created.year.datetime %}
-                    <h5 class="card-subtitle">Last edited: {{ message.last_edited }}</h5>
-                {% endif %}
-    
-                <div class="message">
-                    <p>{{ message.message }}</p>
-                </div>
-                <div class="likes">
-                    <!-- if user likes post -->
-                    <!-- red heart -->
-                    <!-- else -->
-                    <p>♡ {{ message.likes }}</p>
-                </div> 
-            </div>
+{% block followers %}
+<div class="card">
+    <div class="card-body">
+        <div class="card-title">
+            <h1 id="username">{{ profile.username }}</h1>
         </div>
-        {% empty %}
-        No messages yet!
-        {% endfor %}
-        </nav>
+        <div class="card-subtitle">
+            <h2>Followers: <span id="followers">{{ followers }}</span></h2>
+            <h2>Following: {{ following }}</h2>
+        </div>
 
+        {% if not is_curr_user and user.is_authenticated %}
+
+        <form id="follow">
+            <!-- Check for currently following, change wording of button -->
+            {% if is_following %}
+            <input type="submit" class="btn btn-primary" style="width:-webkit-fill-available" value="Unfollow" id="follow_button" name="follow_button">
+            {% else %}
+            <input type="submit" class="btn btn-primary" style="width:-webkit-fill-available" value="Follow" id="follow_button" name="follow_button">
+            {% endif %}
+        </form> 
+
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block previous_button %}
+    <li class="page-item"><a class="page-link" href="{% url 'profile' name=profile page_number=previous %}">Previous</a></li>
+{% endblock %}
+
+{% block number_button %}
+    <li class="page-item"><a class="page-link" href="{% url 'profile' name=profile page_number=i %}">{{ i }}</a></li>
+{% endblock %}
+
+{% block next_button %}
+    <li class="page-item"><a class="page-link" href="{% url 'profile' name=profile page_number=next %}">Next</a></li>
+{% endblock %}
+
+{% block previous_button_end %}
+    <li class="page-item"><a class="page-link" href="{% url 'profile' name=profile page_number=previous %}">Previous</a></li>
+{% endblock %}
+
+{% block number_button_end %}
+    <li class="page-item"><a class="page-link" href="{% url 'profile' name=profile page_number=i %}">{{ i }}</a></li>
+{% endblock %}
+
+{% block next_button_end %}
+    <li class="page-item"><a class="page-link" href="{% url 'profile' name=profile page_number=next %}">Next</a></li>
 {% endblock %}
