@@ -1,5 +1,10 @@
 {% extends "network/layout.html" %}
 
+{% block script %}
+{% load static %}
+<script src="{% static 'network/edit.js' %}" type="text/javascript"></script>
+{% endblock %}
+
 {% block body %}
 
     {% block followers %}{% endblock %}
@@ -48,7 +53,7 @@
                 <h5 class="card-subtitle">Last edited: {{ message.last_edited }}</h5>
             {% endif %}
 
-            <div class="message">
+            <div class="message" id="message-{{ message.pk }}">
                 <p>{{ message.message }}</p>
             </div>
             <div class="likes">
@@ -57,6 +62,13 @@
                 <!-- else -->
                 <p>♡ {{ message.likes }}</p>
             </div> 
+            {% if user.is_authenticated %}
+            {% if user.get_username == message.user.username %}
+            <div class="edit">
+                <button class="btn btn-secondary edit-button" id="edit-button-{{ message.pk }}" onclick="edit({{ message.pk }})">Edit</button>
+            </div>
+            {% endif %}
+            {% endif %}
         </div>
     </div>
 
