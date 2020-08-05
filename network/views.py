@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 
-import inspect
+import inspect, json
 
 from .models import User, Message
 
@@ -178,6 +178,26 @@ def follow(request):
     else: 
         # follow
         curr_user.following.add(profile)
+    return JsonResponse({"success": True})
+
+def edit(request, message_id):
+    # Check method is PUT
+    if not request.method == "PUT":
+        return JsonResponse({"error": "Incorrect method"})
+
+    # Get message from db
+    msg_obj = Message.objects.get(pk=message_id)
+
+    # Check user matches 
+    if not request.user == msg_obj.user:
+        return JsonResponse({"error": "User not logged in"})
+
+    # Update db
+    body = json.loads(request.body)
+    msg_obj.message = body["message"]
+    msg_obj.save()
+
+    # Send response
     return JsonResponse({"success": True})
 
 def make_pages(messages, page_number):
