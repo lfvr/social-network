@@ -11,6 +11,7 @@ class Message(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     last_edited = models.DateTimeField(auto_now=True)
     likes = models.IntegerField(default=0)
+    likers = models.ManyToManyField('User', related_name = "liked_posts")
 
     class Meta:
         ordering = ['-created']

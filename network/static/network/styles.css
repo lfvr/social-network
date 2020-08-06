@@ -2,6 +2,22 @@
     margin: 1%;
 } 
 
+.liked {
+    border: none;
+    background-color: inherit;
+    font-size: 24px;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+.not-liked {
+border: none;
+background-color: inherit;
+font-size: 24px;
+cursor: pointer;
+display: inline-block;
+}
+
 h4 {
     color: grey;
     font-size: 0.75rem;

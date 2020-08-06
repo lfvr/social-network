@@ -16,6 +16,7 @@ def index(request, page_number=1):
     messages = Message.objects.all()
     
     dict = make_pages(messages, page_number)
+    liked_msgs = Message.objects.all().filter(user=request.user)
 
     return render(request, "network/index.html", {
         "messages": dict["messages"],
@@ -23,7 +24,8 @@ def index(request, page_number=1):
         "page_range": dict["page_range"],
         "curr_page": dict["curr_page"],
         "previous": dict["previous"],
-        "next": dict["next"]
+        "next": dict["next"],
+        "liked_msgs": liked_msgs
     })
 
 
@@ -199,6 +201,17 @@ def edit(request, message_id):
 
     # Send response
     return JsonResponse({"success": True})
+
+def like(request, message_id, incr):
+    msg = Message.objects.get(pk=message_id)
+    if incr:
+        msg.likes += 1
+        msg.likers.add(request.user)
+    else:
+        msg.likes -= 1
+        msg.likers.remove(request.user)
+    msg.save()    
+    return JsonResponse({"count": msg.likes})
 
 def make_pages(messages, page_number):
     # Paginate
