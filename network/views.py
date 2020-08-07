@@ -17,7 +17,7 @@ def index(request, page_number=1):
     
     dict = make_pages(messages, page_number)
     if request.user.pk is not None:
-        liked_msgs = Message.objects.all().filter(user=request.user)
+        liked_msgs = Message.objects.all().filter(likers=request.user)
     else:
         liked_msgs = Message.objects.none()
 
@@ -124,6 +124,12 @@ def profile(request, name, page_number=1):
         previous = dict["previous"]
         next = dict["next"]
 
+    # Likes
+    if request.user.pk is not None:
+        liked_msgs = Message.objects.all().filter(likers=request.user)
+    else:
+        liked_msgs = Message.objects.none()
+
     # Show profile page
     return render(request, "network/profile.html", {
         "is_curr_user": is_curr_user,
@@ -136,7 +142,8 @@ def profile(request, name, page_number=1):
         "page_range": page_range,
         "curr_page": curr_page,
         "previous": previous,
-        "next": next
+        "next": next,
+        "liked_msgs": liked_msgs
     })
 
 def following(request, page_number=1):
@@ -160,13 +167,20 @@ def following(request, page_number=1):
         previous = dict["previous"]
         next = dict["next"]
 
+    # Liked messages
+    if request.user.pk is not None:
+        liked_msgs = Message.objects.all().filter(likers=request.user)
+    else:
+        liked_msgs = Message.objects.none()
+
     return render(request, "network/following.html", {
         "messages": messages,
         "num_pages": num_pages,
         "page_range": page_range,
         "curr_page": curr_page,
         "previous": previous,
-        "next": next
+        "next": next,
+        "liked_msgs": liked_msgs
     })
 
 def follow(request):
@@ -205,9 +219,10 @@ def edit(request, message_id):
     # Send response
     return JsonResponse({"success": True})
 
-def like(request, message_id, incr):
+def like(request, message_id):
     msg = Message.objects.get(pk=message_id)
-    if incr:
+    search = Message.objects.get(pk=message_id).likers.filter(username=request.user.username)
+    if not Message.objects.get(pk=message_id).likers.filter(username=request.user.username).exists():
         msg.likes += 1
         msg.likers.add(request.user)
     else:

@@ -1,7 +1,7 @@
 function like(message_id) {
     // Get div and edit button, hide edit button
     const div = document.getElementById("likes-" + message_id)
-    const button = document.getElementById("likes-" + message_id).getElementsByTagName("button")
+    const button = document.getElementById("likes-" + message_id).getElementsByTagName("button")[0]
 
     let incr = true
     // If change from like to unlike
@@ -9,7 +9,7 @@ function like(message_id) {
         incr = false;
     }
     // PUT request to update message
-    fetch(('/like/' + message_id + "/" + incr), {
+    fetch(('/like/' + message_id), {
         method: 'PUT',
         credentials : 'same-origin',
         headers: {
@@ -23,11 +23,11 @@ function like(message_id) {
     })
     .then(likes => {
         if (incr) {
-            button[0].innerText = "❤️ " + likes.count;
-            button[0].className = "liked";
+            button.innerText = "❤️ " + likes.count;
+            button.className = "liked";
         } else {
-            button[0].innerText = "♡ " + likes.count;
-            button[0].className = "not-liked";
+            button.innerText = "♡ " + likes.count;
+            button.className = "not-liked";
         }
     })
     .catch(error => {
