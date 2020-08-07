@@ -16,7 +16,10 @@ def index(request, page_number=1):
     messages = Message.objects.all()
     
     dict = make_pages(messages, page_number)
-    liked_msgs = Message.objects.all().filter(user=request.user)
+    if request.user.pk is not None:
+        liked_msgs = Message.objects.all().filter(user=request.user)
+    else:
+        liked_msgs = Message.objects.none()
 
     return render(request, "network/index.html", {
         "messages": dict["messages"],
